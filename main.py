@@ -14,22 +14,22 @@ from time import sleep
 import random
 
 init(autoreset=True)
-contatos = []
 dict_mensagens = {}
 link = ("https://web.whatsapp.com/")
 
 
 def Informa_contatos():
-    nome = "****"
-    nome = input('Informe o nome de seu contato: ')
-    contatos.append(nome.title())
-    while len(nome) > 1:
-        nome = input('Algum outro contato? ')
-        contatos.append(nome.title())
-    contatos.pop()
-
-    qtd = len(contatos)
-    print(Fore.BLUE + f'Você informou {qtd} contatos.')
+    with open('contatos.txt', 'a+') as ctt:
+        nome = "****"
+        nome = input('Informe o nome de seu contato: ')
+        ctt.write(nome + '\n')
+        while len(nome) > 1:
+            nome = input('Algum outro contato? ')
+            ctt.write(nome + '\n')
+        
+    with open('contatos.txt') as arq:
+        for c in enumerate(arq.readlines()): 
+            print(c)
 
 
 def criar_mensagem():
@@ -78,7 +78,7 @@ def enviar_mensagem_buscando_contato():
 
 
 #  Execução
-
+"""
 Informa_contatos()
 criar_mensagem()
 navegador = int(input("Qual navegador desaja usar? (1)Chrome, (2)Firefox, (0)Cancelar: "))
@@ -110,5 +110,6 @@ except:
     print(Fore.RED + 'Conexão mal sucedida!')
 
 enviar_mensagem_buscando_contato()
-
+"""
+Informa_contatos()
 

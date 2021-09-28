@@ -59,6 +59,29 @@ print(tempo)
 print()
 print(tempo2)
 """
+acao = ""
 
-print('Ola mundo')
+if acao == 0:
+    with open('contatos.txt', 'r+') as arq:
+        arq.seek(0)
+        linhas = arq.readlines()
+        for l in enumerate(linhas, 0):
+            print(l)
+        arq.seek(0)
+        linhas[0] = "Eu\n"
+        arq.writelines(linhas)
+        print()
+        for li in enumerate(linhas, 0):
+            print(li)
+elif acao == 1:
+    with open('contatos.txt', 'a') as arq:
+        novo = "**"
+        novos = []
+        while len(novo) > 0:
+            novo = input('Informe o contato a ser incluido: ')
+            arq.write(novo)
+            novos.append(novo)
+        print(f'Os novos contatos incluídos foram {novos}')
 
+
+        
