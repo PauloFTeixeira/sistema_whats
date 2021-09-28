@@ -1,0 +1,7 @@
+arquivos para salvar contatos
+método para escolher qual lista de contatos usar
+método para modificar listas de contatos
+método para escolher entre usar ou não lista de contatos
+
+alterar uso do XPATH para css-selector
+corrigir bug's
