@@ -59,21 +59,23 @@ print(tempo)
 print()
 print(tempo2)
 """
-acao = ""
+acao = input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  ')
 
-if acao == 0:
+if acao == 1:
     with open('contatos.txt', 'r+') as arq:
         arq.seek(0)
         linhas = arq.readlines()
         for l in enumerate(linhas, 0):
             print(l)
         arq.seek(0)
-        linhas[0] = "Eu\n"
+        id = input('Qual o nº que desaja alterar? ')
+        alter = input('Informe o novo nome do contato: ')
+        linhas[id] = alter + '\n'
         arq.writelines(linhas)
         print()
         for li in enumerate(linhas, 0):
             print(li)
-elif acao == 1:
+elif acao == 2:
     with open('contatos.txt', 'a') as arq:
         novo = "**"
         novos = []
@@ -82,6 +84,16 @@ elif acao == 1:
             arq.write(novo)
             novos.append(novo)
         print(f'Os novos contatos incluídos foram {novos}')
+elif acao == 3:
+    with open('contatos.txt', 'r')as arq:
+        arq.seek(0)
+        linhas = arq.readlines()
+        for l in enumerate(linhas, 0):
+            print(l)
+        remover = input('Qual contato desaja remover? ')
+        linhas.remove(remover)
+
+
 
 
         
