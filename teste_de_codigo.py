@@ -59,39 +59,53 @@ print(tempo)
 print()
 print(tempo2)
 """
-acao = input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  ')
 
-if acao == 1:
-    with open('contatos.txt', 'r+') as arq:
-        arq.seek(0)
-        linhas = arq.readlines()
-        for l in enumerate(linhas, 0):
-            print(l)
-        arq.seek(0)
-        id = input('Qual o nº que desaja alterar? ')
-        alter = input('Informe o novo nome do contato: ')
-        linhas[id] = alter + '\n'
-        arq.writelines(linhas)
-        print()
-        for li in enumerate(linhas, 0):
-            print(li)
-elif acao == 2:
-    with open('contatos.txt', 'a') as arq:
-        novo = "**"
-        novos = []
-        while len(novo) > 0:
-            novo = input('Informe o contato a ser incluido: ')
-            arq.write(novo)
-            novos.append(novo)
-        print(f'Os novos contatos incluídos foram {novos}')
-elif acao == 3:
-    with open('contatos.txt', 'r')as arq:
-        arq.seek(0)
-        linhas = arq.readlines()
-        for l in enumerate(linhas, 0):
-            print(l)
-        remover = input('Qual contato desaja remover? ')
-        linhas.remove(remover)
+
+def setting_contacts():
+    acao = int(input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  '))
+    if acao == 1:
+        with open('contatos.txt', 'r+') as arq:
+            arq.seek(0)
+            linhas = arq.readlines()
+            for l in enumerate(linhas, 0):
+                print(l)
+            arq.seek(0)
+            id = int(input('Qual o nº que desaja alterar? '))
+            alter = str(input('Informe o novo nome do contato: ') + '\n')
+            linhas[id] = alter 
+            arq.writelines(linhas)
+            print()
+            for li in enumerate(linhas, 0):
+                print(li)
+    elif acao == 2:
+        with open('contatos.txt', 'a') as arq:
+            novo = "**"
+            novos = []
+            while len(novo) > 0:
+                novo = input('Informe o contato a ser incluido: ') 
+                arq.write(novo + '\n')
+                novos.append(novo)
+            print(f'Os novos contatos incluídos foram {novos}')
+    elif acao == 3:
+        with open('contatos.txt') as arq:
+            print(arq.readlines())
+            with open ('contatos.txt', 'w+r') as arquivo:
+                contatos = arquivo.readlines()
+                print(contatos)
+                arquivo.seek(0)
+                deletar = str(input('Informe o contato a ser removido: ') + "\n")
+                contatos.remove(deletar)
+                arquivo.writelines(contatos)
+                setting_contacts()
+            
+
+
+
+setting_contacts()
+
+
+
+
 
 
 
