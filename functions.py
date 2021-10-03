@@ -1,20 +1,3 @@
-"""
-Sistema de automação para WhatsApp
-"""
-
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.common.keys import Keys
-from colorama import Fore, Style, init
-from time import sleep
-import random
-
-init(autoreset=True)
-dict_mensagens = {}
-link = ("https://web.whatsapp.com/")
-
-
 def Informa_contatos():
     with open('contatos_personalizado.txt', 'a+') as ctt:
         nome = "****"
@@ -111,41 +94,3 @@ def setting_contacts():
             with open ('contatos.txt', 'w') as arquivo:
                 arquivo.writelines(nomes)
         setting_contacts()  
-
-
-#  Execução
-"""
-Informa_contatos()
-criar_mensagem()
-navegador = int(input("Qual navegador desaja usar? (1)Chrome, (2)Firefox, (0)Cancelar: "))
-
-try:
-    if navegador == 1:
-            browser = webdriver.Chrome(ChromeDriverManager().install())
-            browser.get(link)
-            print(Fore.BLUE + "Aguardando conexão com o WhatsApp...")
-            sleep(1)
-            manter_conectado = browser.find_element_by_xpath('/html/body/div/div[1]/div/div[2]/div[1]/div/div[3]/label/input').click()
-            while len(browser.find_elements_by_id("side")) < 1:
-                sleep(1)
-            print(Fore.GREEN + "Conexão bem sucedida!")
-    elif navegador == 2:
-            browser = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-            browser.get(link)
-            print(Fore.BLUE + "Aguardando conexão com o WhatsApp...")
-            sleep(1)
-            manter_conectado = browser.find_element_by_xpath('/html/body/div/div[1]/div/div[2]/div[1]/div/div[3]/label/input').click()
-            while len(browser.find_elements_by_id("side")) < 1:
-                sleep(1)
-            print(Fore.GREEN + "Conexão bem sucedida!")
-    elif navegador == 0:
-            exit()
-    else:
-        abrir_navegador()
-except:
-    print(Fore.RED + 'Conexão mal sucedida!')
-
-enviar_mensagem_buscando_contato()
-"""
-Informa_contatos()
-

@@ -1,7 +1,22 @@
-arquivos para salvar contatos
+###  arquivos para salvar contatos
 método para escolher qual lista de contatos usar
-método para modificar listas de contatos
+#### método para modificar listas de contatos
 método para escolher entre usar ou não lista de contatos
 
 alterar uso do XPATH para css-selector
 corrigir bug's
+
+
+escolher entre CRIAR NOVA LISTA, USAR EXISTENTE, ADICIONAR MANUALMENTE
+
+
+Menu de opções e sistema de validação
+
+
+Sistema de salvamento de mensagens
+
+###################################################################################################
+- trabalhar no execution.py
+- trabalhar no functions.py
+- organizar projeto e deletar main.py, atualizaçõesmain.py
+
