@@ -1,6 +1,5 @@
 """
 funçao
-"""
 
 def setting_contacts():
     acao = int(input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  '))
@@ -41,5 +40,15 @@ def setting_contacts():
         setting_contacts()          
 
 setting_contacts()
+
+contato = 'eu\n'
+cont = contato[:-1]
+print(contato)
+print(cont)
+
+print('aa')
+print('bb')
+
+"""
 
 

@@ -20,3 +20,6 @@ Sistema de salvamento de mensagens
 - trabalhar no functions.py
 - organizar projeto e deletar main.py, atualizaçõesmain.py
 
+###################################################################################################
+comentar todas as funções e projeto inteiro
+organizar print coloridos

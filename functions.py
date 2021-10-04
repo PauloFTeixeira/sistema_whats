@@ -1,10 +1,22 @@
+from os import close
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.common.keys import Keys
+from colorama import Fore, Style, init
+from time import sleep
+import random
+
+
 def Informa_contatos():
-    with open('contatos_personalizado.txt', 'a+') as ctt:
+    with open('contatos_personalizado.txt', 'w') as ctt:
         nome = "****"
         nome = input('Informe o nome de seu contato: ')
         ctt.write(nome + '\n')
-        while len(nome) > 1:
-            nome = input('Algum outro contato? ')
+        while nome != 'sair':
+            nome = input('Inform um contato ou "sair" para encerrar: ')
+            if nome == 'sair':
+                break
             ctt.write(nome + '\n')
         
     with open('contatos_personalizado.txt') as arq:
@@ -13,7 +25,8 @@ def Informa_contatos():
 
 
 def criar_mensagem():
-
+    global dict_mensagens
+    dict_mensagens = {}
     contador = 0
     mensagem = '***'
     while len(mensagem) > 1:
@@ -26,41 +39,54 @@ def criar_mensagem():
         print(Fore.BLUE + f'{msg}, {dict_mensagens[msg]}')
 
 
-def enviar_mensagem_buscando_contato():
+def enviar_mensagem_buscando_contato(browser, nome_lista):
     """
     Envia mensagem utilizando uma lista de contatos préviamente informada, através de informação direta ou busca por contatos em arquivo .csv
     
     """
     try:
-        for contato in contatos:
-            campo_pesquisa = browser.find_element_by_xpath('/html/body/div/div[1]/div[1]/div[3]/div/div[1]/div/label/div/div[2]')
-            campo_pesquisa.click()
-            sleep(0.25)
-            campo_pesquisa.send_keys(contato)
-            campo_pesquisa.send_keys(Keys.ENTER)
-            
-            for chave in dict_mensagens:
-                msg = dict_mensagens[chave]
-                tempo_entre_mensagens = float(len(msg)) * 0.15
-                sleep(tempo_entre_mensagens)
-                campo_digitacao = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]')
-                campo_digitacao.click()
-                campo_digitacao.send_keys(msg)
-                sleep(0.05)
-                enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
-                enviar.click()
-            print(Fore.GREEN + f'Mensagem enviada para {contato}')
-        sleep(10)
-            
-        browser.quit()
+        with open(f'{nome_lista}') as lista_de_contatos:
+            contatos = lista_de_contatos.readlines()
+            for cont in contatos:
+                contato = cont[:-1]
+                campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
+                campo_pesquisa.click()
+                sleep(0.25)
+                campo_pesquisa.send_keys(contato)
+                campo_pesquisa.send_keys(Keys.ENTER)
+                
+                for chave in dict_mensagens:
+                    msg = dict_mensagens[chave]
+                    tempo_entre_mensagens = float(len(msg)) * 0.15
+                    sleep(tempo_entre_mensagens)
+                    campo_digitacao = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]')
+                    campo_digitacao.click()
+                    campo_digitacao.send_keys(msg)
+                    sleep(0.05)
+                    enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
+                    enviar.click()
+                print(Fore.GREEN + f'Mensagem enviada para {contato}')
+            sleep(10)
+                
+            browser.quit()
     except:
         print('Erro ao enviar mensagem, contate o Administrador do sistema!')
 
 
 def setting_contacts():
+    with open('nome_listas') as listas:
+        lista = listas.readlines()
+        print('As listas cadastradas são:')
+        for l in lista:
+            print(Fore.BLUE + f'{l}')
+    nome_lista = str(input('Qual lista desaja modificar? '))
+    with open(f'{nome_lista}') as nomes:
+        print('Os contatos salvos nesta lista são:')
+        for nome in nomes.readlines():
+            print(Fore.BLUE + nome)
     acao = int(input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  '))
     if acao == 1:
-        with open('contatos.txt', 'r+') as arq:
+        with open(f'{nome_lista}', 'r+') as arq:
             arq.seek(0)
             linhas = arq.readlines()
             for l in enumerate(linhas, 0):
@@ -75,7 +101,7 @@ def setting_contacts():
                 print(li)
         setting_contacts()
     elif acao == 2:
-        with open('contatos.txt', 'a') as arq:
+        with open(f'{nome_lista}', 'a') as arq:
             novo = "**"
             novos = []
             while len(novo) > 0:
@@ -85,7 +111,7 @@ def setting_contacts():
             print(f'Os novos contatos incluídos foram {novos}')
         setting_contacts()
     elif acao == 3:
-        with open('contatos.txt') as arq:
+        with open(f'{nome_lista}') as arq:
             nomes = arq.readlines()
             print(nomes)
             deletar = str(input('Informe o contato a ser removido: ') + "\n")
@@ -94,3 +120,63 @@ def setting_contacts():
             with open ('contatos.txt', 'w') as arquivo:
                 arquivo.writelines(nomes)
         setting_contacts()  
+
+
+def erro():
+    print('Esse nome de lista já está em uso, escolha outro nome.')
+    criar_lista_contatos()
+
+
+def criar_lista_contatos():
+    nome_lista = input('Qual o nome da lista? ')
+    try:
+        with open(f'{nome_lista}', 'x'):
+            pass
+ #  Registra o nome da nova lista de contatos no arquivo que lista tais nomes.                
+        with open('nome_listas', 'a') as nomes:
+            nomes.write(f'{nome_lista}' + '\n')        
+ #  Faz o registro de todos os contatos que o usuário quiser.
+        with open(f'{nome_lista}', 'a') as lista:
+            contato = '**'
+            while contato != 'sair':
+                contato = input('Informe um contato ou "sair" para encerrar: ')
+                if contato == 'sair':
+                    break
+                lista.write(contato + '\n')
+ #  Tratamento de erro, caso já haja uma lista com o nome informado
+    except FileExistsError:
+        erro()
+            
+
+def enviar_mensagem_contato_personalizado(browser):
+    """
+    Envia mensagem utilizando uma lista de contatos préviamente informada, através de informação direta ou busca por contatos em arquivo .csv
+    
+    """
+    try:
+        with open('contatos_personalizado.txt') as lista_de_contatos:
+            contatos = lista_de_contatos.readlines()
+            for cont in contatos:
+                contato = cont[:-1]  # para remover o \n do final da string
+                campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
+                campo_pesquisa.click()
+                sleep(0.25)
+                campo_pesquisa.send_keys(contato)
+                campo_pesquisa.send_keys(Keys.ENTER)
+
+                for chave in dict_mensagens:
+                    msg = dict_mensagens[chave]
+                    tempo_entre_mensagens = float(len(msg)) * 0.15
+                    sleep(tempo_entre_mensagens)
+                    campo_digitacao = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]')
+                    campo_digitacao.click()
+                    campo_digitacao.send_keys(msg)
+                    sleep(0.05)
+                    enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
+                    enviar.click()
+                print(Fore.GREEN + f'Mensagem enviada para {contato}')
+            sleep(10)
+
+            browser.quit()
+    except:
+        print('Erro ao enviar mensagem, contate o Administrador do sistema!')

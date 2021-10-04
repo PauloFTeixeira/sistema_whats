@@ -114,7 +114,7 @@ def setting_contacts():
 
 
 #  Execução
-"""
+
 Informa_contatos()
 criar_mensagem()
 navegador = int(input("Qual navegador desaja usar? (1)Chrome, (2)Firefox, (0)Cancelar: "))
@@ -146,6 +146,6 @@ except:
     print(Fore.RED + 'Conexão mal sucedida!')
 
 enviar_mensagem_buscando_contato()
-"""
-Informa_contatos()
+
+
 
