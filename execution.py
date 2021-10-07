@@ -7,10 +7,13 @@ from colorama import Fore, Style, init
 from time import sleep
 import random
 import functions
+import os
+
 
 init(autoreset=True)
 link = ("https://web.whatsapp.com/")
 
 while True:
-    functions.menu(functions)  
+    functions.menu(functions, link)  
+
 

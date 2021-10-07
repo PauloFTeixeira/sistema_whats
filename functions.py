@@ -1,4 +1,5 @@
 from os import close
+import sys
 from colorama.initialise import reinit
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -7,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from colorama import Fore, Style, init
 from time import sleep
 import random
-
+import os
 
 def Informa_contatos():
     with open('contatos_personalizado.txt', 'w') as ctt:
@@ -81,47 +82,66 @@ def setting_contacts():
         for l in lista:
             print(Fore.BLUE + f'{l}')
     nome_lista = str(input('Qual lista desaja modificar? '))
-    with open(f'{nome_lista}') as nomes:
-        print('Os contatos salvos nesta lista são:')
-        for nome in nomes.readlines():
-            print(Fore.BLUE + nome)
-    acao = int(input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  '))
-    if acao == 1:
-        with open(f'{nome_lista}', 'r+') as arq:
-            arq.seek(0)
-            linhas = arq.readlines()
-            for l in enumerate(linhas, 0):
-                print(l)
-            arq.seek(0)
-            id = int(input('Qual o nº que desaja alterar? '))
-            alter = str(input('Informe o novo nome do contato: ') + '\n')
-            linhas[id] = alter 
-            arq.writelines(linhas)
-            print()
-            for li in enumerate(linhas, 0):
-                print(li)
-        setting_contacts()
-    elif acao == 2:
-        with open(f'{nome_lista}', 'a') as arq:
-            novo = "**"
-            novos = []
-            while len(novo) > 0:
-                novo = input('Informe o contato a ser incluido: ') 
-                arq.write(novo + '\n')
-                novos.append(novo)
-            print(f'Os novos contatos incluídos foram {novos}')
-        setting_contacts()
-    elif acao == 3:
-        with open(f'{nome_lista}') as arq:
-            nomes = arq.readlines()
-            print(nomes)
-            deletar = str(input('Informe o contato a ser removido: ') + "\n")
-            nomes.remove(deletar)
-            print('**')
-            with open ('contatos.txt', 'w') as arquivo:
-                arquivo.writelines(nomes)
-        setting_contacts()  
+    try:
+        with open(f'{nome_lista}') as nomes:
+            print('Os contatos salvos nesta lista são:')
+            for nome in nomes.readlines():
+                print(Fore.BLUE + nome)
+        acao = int(input('Escolha uma opção: [1]EDITAR UM CONTATO, [2]INCLUIR UM CONTATO, [3]EXCLUIR UM CONTATO, [0]SAIR  '))
+        os.system('clear') or None
+    except FileNotFoundError:
+        print(Fore.RED + 'O nome informado não existe')
+    try:
+        if acao == 1:
+            with open(f'{nome_lista}', 'r+') as arq:
+                arq.seek(0)
+                linhas = arq.readlines()
+                for l in enumerate(linhas, 0):
+                    print(l)
+                arq.seek(0)
+                id = int(input('Qual o nº que desaja alterar? '))
+                alter = str(input('Informe o novo nome do contato: ') + '\n')
 
+                with open(f'{nome_lista}', 'w') as gravacao:
+                    linhas[id] = alter 
+                    gravacao.writelines(linhas)
+                    print()
+                #  for li in enumerate(linhas, 0):
+                #      print(li)
+            os.system('clear') or None
+            os.execv(sys.executable, ['python'] + sys.argv)
+
+        elif acao == 2:
+            with open(f'{nome_lista}', 'a') as arq:
+                novo = "**"
+                novos = []
+                while novo != 'sair':
+                    novo = input('Informe o contato a ser incluido ou "sair" para encerrar: ') 
+                    if novo == 'sair':
+                        break
+                    arq.write(novo + '\n')
+                    novos.append(novo)
+                os.system('clear') or None
+                print(Fore.BLUE + f'Os novos contatos incluídos foram {novos}')
+            os.execv(sys.executable, ['python'] + sys.argv)
+
+        elif acao == 3:
+            try:
+                with open(f'{nome_lista}') as arq:
+                    nomes = arq.readlines()
+                    print(nomes)
+                    deletar = str(input('Informe o contato a ser removido: ') + "\n")
+                    nomes.remove(deletar)
+                    with open (f'{nome_lista}', 'w') as arquivo:
+                        arquivo.writelines(nomes)
+                os.system('clear') or None
+                os.execv(sys.executable, ['python'] + sys.argv)
+            except ValueError:
+                print(Fore.RED + 'O contato informado não existe')
+        elif acao == 0:
+            os.execv(sys.executable, ['python'] + sys.argv)
+    except UnboundLocalError:
+        pass
 
 def erro():
     print('Esse nome de lista já está em uso, escolha outro nome.')
@@ -144,6 +164,7 @@ def criar_lista_contatos():
                 if contato == 'sair':
                     break
                 lista.write(contato + '\n')
+            os.system('clear') or None
  #  Tratamento de erro, caso já haja uma lista com o nome informado
     except FileExistsError:
         erro()
@@ -183,7 +204,7 @@ def enviar_mensagem_contato_personalizado(browser):
         print('Erro ao enviar mensagem, contate o Administrador do sistema!')
 
 
-def menu(functions):
+def menu(functions, link):
     print(Fore.CYAN + '=-=' * 40)
     print('Envio de mensagens')
     print('[1]Informando contatos personalizados  |  [2]Usando Lista de contatos')
@@ -261,10 +282,16 @@ def menu(functions):
         functions.criar_lista_contatos()
 
     elif opcao == 4:
-        functions.setting_contacts()
+        with open('nome_listas') as nome:
+            lista = nome.readlines()
+            if len(lista) > 0:
+                functions.setting_contacts()
+            else:
+                os.system('clear') or None
+                print(Fore.RED + 'Você não tem nenhuma lista de contatos cadastrada!')
+                print()
 
     elif opcao == 0:
         quit()
     
-
 
