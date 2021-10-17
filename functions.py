@@ -7,6 +7,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.keys import Keys
 from colorama import Fore, Style, init
 from time import sleep
+from tkinter import filedialog
 import random
 import os
 
@@ -40,6 +41,12 @@ def criar_mensagem():
     for msg in dict_mensagens:
         print(Fore.BLUE + f'{msg}, {dict_mensagens[msg]}')
 
+    global anexos
+    anexos = ()
+    anexos = file = filedialog.askopenfilenames()
+    for anexo in anexos:
+        print(Fore.BLUE + f'Arquivo {anexo} anexado.')
+
 
 def enviar_mensagem_buscando_contato(browser, nome_lista):
     """
@@ -50,13 +57,13 @@ def enviar_mensagem_buscando_contato(browser, nome_lista):
         with open(f'{nome_lista}') as lista_de_contatos:
             contatos = lista_de_contatos.readlines()
             for cont in contatos:
-                contato = cont[:-1]
+                contato = cont[:-1]  # para remover o \n do final da string
                 campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
                 campo_pesquisa.click()
                 sleep(0.25)
                 campo_pesquisa.send_keys(contato)
-                campo_pesquisa.send_keys(Keys.ENTER)
-                
+                sleep(0.25)
+                campo_pesquisa.send_keys(Keys.ENTER)                
                 for chave in dict_mensagens:
                     msg = dict_mensagens[chave]
                     tempo_entre_mensagens = float(len(msg)) * 0.15
@@ -67,6 +74,16 @@ def enviar_mensagem_buscando_contato(browser, nome_lista):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()
+                if len(anexos) > 0:
+                    for anexo in anexos:
+                        clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
+                        clip.click()            
+                        anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
+                        anexo_arquivo.send_keys(anexo)
+                        sleep(0.5)
+                        send = browser.find_element_by_css_selector('span[data-icon="send"]')
+                        send.click()
+
                 print(Fore.GREEN + f'Mensagem enviada para {contato}')
             sleep(10)
                 
@@ -183,8 +200,9 @@ def enviar_mensagem_contato_personalizado(browser):
                 contato = cont[:-1]  # para remover o \n do final da string
                 campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
                 campo_pesquisa.click()
-                sleep(0.25)
+                sleep(0.5)
                 campo_pesquisa.send_keys(contato)
+                sleep(0.5)
                 campo_pesquisa.send_keys(Keys.ENTER)
 
                 for chave in dict_mensagens:
@@ -197,6 +215,16 @@ def enviar_mensagem_contato_personalizado(browser):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()
+                if len(anexos) > 0:
+                    for anexo in anexos:
+                        clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
+                        clip.click()            
+                        anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
+                        anexo_arquivo.send_keys(anexo)
+                        sleep(0.5)
+                        send = browser.find_element_by_css_selector('span[data-icon="send"]')
+                        send.click()
+
                 print(Fore.GREEN + f'Mensagem enviada para {contato}')
             sleep(10)
 
