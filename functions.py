@@ -143,6 +143,7 @@ def setting_contacts():
     except UnboundLocalError:
         pass
 
+
 def erro():
     print('Esse nome de lista já está em uso, escolha outro nome.')
     criar_lista_contatos()
