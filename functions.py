@@ -74,18 +74,17 @@ def enviar_mensagem_buscando_contato(browser, nome_lista):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()
-                if len(anexos) > 0:
-                    for anexo in anexos:
-                        clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
-                        clip.click()            
-                        anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
-                        anexo_arquivo.send_keys(anexo)
-                        sleep(0.5)
-                        send = browser.find_element_by_css_selector('span[data-icon="send"]')
-                        send.click()
+                for anexo in anexos:
+                    clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
+                    clip.click()            
+                    anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
+                    anexo_arquivo.send_keys(anexo)
+                    browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
+                    send = browser.find_element_by_css_selector('span[data-icon="send"]')
+                    send.click()
 
                 print(Fore.GREEN + f'Mensagem enviada para {contato}')
-            sleep(10)
+            sleep(5)
                 
             browser.quit()
     except:
@@ -215,18 +214,18 @@ def enviar_mensagem_contato_personalizado(browser):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()
-                if len(anexos) > 0:
-                    for anexo in anexos:
-                        clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
-                        clip.click()            
-                        anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
-                        anexo_arquivo.send_keys(anexo)
-                        sleep(0.5)
-                        send = browser.find_element_by_css_selector('span[data-icon="send"]')
-                        send.click()
+                
+                for anexo in anexos:
+                    clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
+                    clip.click()            
+                    anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
+                    anexo_arquivo.send_keys(anexo)
+                    browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
+                    send = browser.find_element_by_css_selector('span[data-icon="send"]')
+                    send.click()
 
                 print(Fore.GREEN + f'Mensagem enviada para {contato}')
-            sleep(10)
+            sleep(5)
 
             browser.quit()
     except:
@@ -323,4 +322,3 @@ def menu(functions, link):
     elif opcao == 0:
         quit()
     
-

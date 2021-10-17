@@ -17,4 +17,3 @@ link = ("https://web.whatsapp.com/")
 while True:
     functions.menu(functions, link)  
 
-
