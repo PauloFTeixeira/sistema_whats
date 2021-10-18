@@ -57,12 +57,12 @@ def enviar_mensagem_buscando_contato(browser, nome_lista):
         with open(f'{nome_lista}') as lista_de_contatos:
             contatos = lista_de_contatos.readlines()
             for cont in contatos:
+                sleep(0.25)
                 contato = cont[:-1]  # para remover o \n do final da string
                 campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
                 campo_pesquisa.click()
                 sleep(0.25)
-                campo_pesquisa.send_keys(contato)
-                sleep(0.25)
+                campo_pesquisa.send_keys(contato)                
                 campo_pesquisa.send_keys(Keys.ENTER)                
                 for chave in dict_mensagens:
                     msg = dict_mensagens[chave]
@@ -196,12 +196,12 @@ def enviar_mensagem_contato_personalizado(browser):
         with open('contatos_personalizado.txt') as lista_de_contatos:
             contatos = lista_de_contatos.readlines()
             for cont in contatos:
+                sleep(0.5)
                 contato = cont[:-1]  # para remover o \n do final da string
                 campo_pesquisa = browser.find_element_by_xpath('//*[@id="side"]/div[1]/div/label/div/div[2]')
                 campo_pesquisa.click()
                 sleep(0.5)
-                campo_pesquisa.send_keys(contato)
-                sleep(0.5)
+                campo_pesquisa.send_keys(contato)                
                 campo_pesquisa.send_keys(Keys.ENTER)
 
                 for chave in dict_mensagens:
@@ -213,8 +213,7 @@ def enviar_mensagem_contato_personalizado(browser):
                     campo_digitacao.send_keys(msg)
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
-                    enviar.click()
-                
+                    enviar.click()                
                 for anexo in anexos:
                     clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
                     clip.click()            
