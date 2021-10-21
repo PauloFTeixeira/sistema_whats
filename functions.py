@@ -43,12 +43,12 @@ def criar_mensagem():
 
     global anexos
     anexos = ()
-    anexos = file = filedialog.askopenfilenames()
+    anexos = filedialog.askopenfilenames()
     for anexo in anexos:
         print(Fore.BLUE + f'Arquivo {anexo} anexado.')
 
 
-def enviar_mensagem_buscando_contato(browser, nome_lista):
+def enviar_mensagem_buscando_contato(browser, nome_lista, anexos):
     """
     Envia mensagem utilizando uma lista de contatos préviamente informada, através de informação direta ou busca por contatos em arquivo .csv
     
@@ -74,9 +74,12 @@ def enviar_mensagem_buscando_contato(browser, nome_lista):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()
+
                 for anexo in anexos:
+                    sleep(0.75)
                     clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
                     clip.click()            
+                    sleep(0.75)
                     anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
                     anexo_arquivo.send_keys(anexo)
                     browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
@@ -187,7 +190,7 @@ def criar_lista_contatos():
         erro()
             
 
-def enviar_mensagem_contato_personalizado(browser):
+def enviar_mensagem_contato_personalizado(browser, anexos):
     """
     Envia mensagem utilizando uma lista de contatos préviamente informada, através de informação direta ou busca por contatos em arquivo .csv
     
@@ -214,9 +217,12 @@ def enviar_mensagem_contato_personalizado(browser):
                     sleep(0.05)
                     enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
                     enviar.click()                
+                
                 for anexo in anexos:
+                    sleep(0.75)
                     clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
-                    clip.click()            
+                    clip.click()
+                    sleep(0.75)            
                     anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
                     anexo_arquivo.send_keys(anexo)
                     browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
@@ -268,7 +274,7 @@ def menu(functions, link):
                     print(Fore.BLUE + "Conexão bem sucedida!")
             elif navegador == 0:
                     exit()
-            functions.enviar_mensagem_contato_personalizado(browser)
+            functions.enviar_mensagem_contato_personalizado(browser, anexos)
         except:
             print(Fore.RED + 'Conexão mal sucedida!')
 
@@ -301,7 +307,7 @@ def menu(functions, link):
                     print(Fore.BLUE + "Conexão bem sucedida!")
             elif navegador == 0:
                     exit()
-            functions.enviar_mensagem_buscando_contato(browser, nome_lista)
+            functions.enviar_mensagem_buscando_contato(browser, nome_lista, anexos)
         except:
             print(Fore.RED + 'Conexão mal sucedida!')
 
