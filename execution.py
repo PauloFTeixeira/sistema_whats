@@ -9,10 +9,10 @@ from tkinter import filedialog
 import random
 import functions
 import os
-
+from
 
 init(autoreset=True)
-link = ("https://web.whatsapp.com/")
+link = "https://web.whatsapp.com/"
 
 while True:
     functions.menu(functions, link)  
