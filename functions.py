@@ -79,14 +79,8 @@ def enviar_mensagem_buscando_contato(browser, nome_lista, anexos):
                     campo_digitacao.click()
                     campo_digitacao.send_keys(msg)
                     sleep(0.05)
-<<<<<<< HEAD
-                    enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
-                    enviar.click()
-
-=======
                    
                     campo_digitacao.send_keys(Keys.ENTER)
->>>>>>> atualizacao
                 for anexo in anexos:
                     sleep(0.75)
                     clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
@@ -220,7 +214,6 @@ def enviar_mensagem_contato_personalizado(browser, anexos):
                 campo_pesquisa.send_keys(contato)                
                 campo_pesquisa.send_keys(Keys.ENTER)
 
-<<<<<<< HEAD
                 for chave in dict_mensagens:
                     msg = dict_mensagens[chave]
                     tempo_entre_mensagens = float(len(msg)) * 0.15
@@ -242,28 +235,6 @@ def enviar_mensagem_contato_personalizado(browser, anexos):
                     browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
                     send = browser.find_element_by_css_selector('span[data-icon="send"]')
                     send.click()
-=======
-                confirmacao = browser.find_element_by_css_selector('div[class="_21nHd"]').text.lower()
-                if contato == confirmacao:
-                    for chave in dict_mensagens:
-                        msg = dict_mensagens[chave]
-                        tempo_entre_mensagens = float(len(msg)) * 0.15
-                        sleep(tempo_entre_mensagens)
-                        campo_digitacao = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[1]/div/div[2]')
-                        campo_digitacao.click()
-                        campo_digitacao.send_keys(msg)
-                        sleep(0.05)
-                        enviar = browser.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div/div[2]/div[2]/button')
-                        enviar.click()                
-                    for anexo in anexos:
-                        clip = browser.find_element_by_css_selector('span[data-testid="clip"]')
-                        clip.click()            
-                        anexo_arquivo = browser.find_element_by_css_selector('input[type="file"]')
-                        anexo_arquivo.send_keys(anexo)
-                        browser.implicitly_wait(30)  # espera a imagem ser carregada e envia
-                        send = browser.find_element_by_css_selector('span[data-icon="send"]')
-                        send.click()
->>>>>>> atualizacao
 
                     print(Fore.GREEN + f'Mensagem enviada para {contato}')
                 else:
@@ -326,6 +297,7 @@ def menu(functions, link):
         navegador = int(input("Qual navegador desaja usar? (1)Chrome, (2)Firefox, (0)Cancelar: "))
         
         if navegador == 1:
+            try:
                 browser = webdriver.Chrome(ChromeDriverManager().install())
                 browser.get(link)
                 print(Fore.BLUE + "Aguardando conexão com o WhatsApp...")
@@ -334,7 +306,7 @@ def menu(functions, link):
                 while len(browser.find_elements_by_id("side")) < 1:
                     sleep(1)
                 print(Fore.BLUE + "Conexão bem sucedida!")
-        elif navegador == 2:
+            elif navegador == 2:
                 browser = webdriver.Firefox(executable_path=GeckoDriverManager().install())
                 browser.get(link)
                 print(Fore.BLUE + "Aguardando conexão com o WhatsApp...")
@@ -342,7 +314,6 @@ def menu(functions, link):
                 manter_conectado = browser.find_element_by_xpath('/html/body/div/div[1]/div/div[2]/div[1]/div/div[3]/label/input').click()
                 while len(browser.find_elements_by_id("side")) < 1:
                     sleep(1)
-<<<<<<< HEAD
                     manter_conectado = browser.find_element_by_xpath('/html/body/div/div[1]/div/div[2]/div[1]/div/div[3]/label/input').click()
                     while len(browser.find_elements_by_id("side")) < 1:
                         sleep(1)
@@ -350,16 +321,9 @@ def menu(functions, link):
             elif navegador == 0:
                     exit()
             functions.enviar_mensagem_buscando_contato(browser, nome_lista, anexos)
-        except:
-            print(Fore.RED + 'Conexão mal sucedida!')
-=======
-                print(Fore.BLUE + "Conexão bem sucedida!")
-        elif navegador == 0:
-                exit()
-        functions.enviar_mensagem_buscando_contato(browser, nome_lista)
-        
->>>>>>> atualizacao
-
+            except:
+                print(Fore.RED + 'Conexão mal sucedida!')
+    
     elif opcao == 3:
         functions.criar_lista_contatos()
 
@@ -376,6 +340,6 @@ def menu(functions, link):
     elif opcao == 0:
         quit()
     
-
-
-"""Montar um dicionário para relatar os contatos que não foram enviados..."""
+"""
+Montar um dicionário para relatar os contatos que não foram enviados...
+"""
